@@ -92,7 +92,7 @@ class test_speed():
 if __name__ == '__main__':
     server1 = 'speed-king.cybermesa.com:8080'
    # server1 = 'albuquerque.speedtest.centurylink.net:8080'
-    ts = test_speed(server=server1,chosentime=60)
+    ts = test_speed(server=server1,chosentime=600)
     ts.OpenFile()
     ts.run()
     
