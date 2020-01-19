@@ -124,12 +124,8 @@ class test_speed():
 if __name__ == '__main__':
     server1 = 'speed-king.cybermesa.com:8080'
    # server1 = 'albuquerque.speedtest.centurylink.net:8080'
-<<<<<<< HEAD
     ts = test_speed(server=server1,chosentime=60)
     ts.GetArguments()
-=======
-    ts = test_speed(server=server1,chosentime=600)
->>>>>>> branch 'master' of https://github.com/pabloemma/speedtest.git
     ts.OpenFile()
     ts.run()
     
