@@ -79,13 +79,18 @@ class test_speed():
             pingi = round(self.pingit(),2)
             downloadi = round(self.downloadit(),2)
             uploadi = round(self.uploadit(),2) 
+
             if(self.vers == 2):
                 
                 print 'ping = ',pingi, ' download speed Mb/sec = ',downloadi, 'upload_speed Mb/sec = ',uploadi
             else:
                 print('ping = ',pingi, ' download speed Mb/sec = ',downloadi, 'upload_speed Mb/sec = ',uploadi)
+
+            
             now=datetime.datetime.now()
             myline=now.strftime("%d/%m/%Y,%H:%M:%S")+','+str(pingi)+','+str(downloadi)+','+str(uploadi)+'\n'                
+
+            
             if(date.today()>self.current_day):
                 #we have a new day
                 self.output.close()
