@@ -13,6 +13,8 @@ import time
 import os
 import datetime
 from datetime import  date 
+import argparse as argp  # we want to sue CLI
+
 
 
 
@@ -42,7 +44,35 @@ class test_speed():
         else:
             self.st.host = server
             
+            #instantiate the parser
+            
+            
+    def GetArguments(self):
+        """
+        this method deals with arguments parsed
+        """
+        #instantiate the parser
+        parser = argp.ArgumentParser()
+        
+        # now we build up the different args we can have
+        parser.add_argument("-t","--time",type = int,help = "the time interval in seconds" )
+        parser.add_argument("-s","--server",help = "the speedtest server" )
+    
    
+        # do our arguments
+        args = parser.parse_args()
+        #check if there are any arguments
+        if(len(sys.argv) == 0):
+            return
+        else:
+            if(args.time != None):
+                self.chosentime = args.time
+                print('time interval',self.chosentime,'sec')
+            if(args.server != None):
+                self.st.host = args.server
+                #print self.st.host
+                print('chosen server',self.st.host)
+                
             
     def run(self):
         while(1==1):
@@ -95,6 +125,7 @@ if __name__ == '__main__':
     server1 = 'speed-king.cybermesa.com:8080'
    # server1 = 'albuquerque.speedtest.centurylink.net:8080'
     ts = test_speed(server=server1,chosentime=60)
+    ts.GetArguments()
     ts.OpenFile()
     ts.run()
     
