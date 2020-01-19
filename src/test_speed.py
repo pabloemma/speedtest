@@ -86,6 +86,12 @@ class test_speed():
                 print('ping = ',pingi, ' download speed Mb/sec = ',downloadi, 'upload_speed Mb/sec = ',uploadi)
             now=datetime.datetime.now()
             myline=now.strftime("%d/%m/%Y,%H:%M:%S")+','+str(pingi)+','+str(downloadi)+','+str(uploadi)+'\n'                
+            if(date.today()>self.current_day):
+                #we have a new day
+                self.output.close()
+                self.OpenFile()
+                                
+
             self.output.write(myline)
             time.sleep(self.chosentime)
 
