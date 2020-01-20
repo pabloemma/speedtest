@@ -18,7 +18,7 @@ import argparse as argp  # we want to sue CLI
 
 
 
-import pyspeedtest  
+import pyspeedtest_ak as pyspeedtest  
 
 
 class test_speed():
@@ -26,9 +26,9 @@ class test_speed():
     
     
     def __init__(self,server,chosentime):
-        
+        print (' in init')
         # before we do anything, let's determine the python version
-        if (sys.version_info > (3, 0)):
+        if (sys.version_info[0] == 3):
             print(' we have python 3')
             self.vers = 3
         else:
@@ -44,9 +44,30 @@ class test_speed():
         else:
             self.st.host = server
             
-            #instantiate the parser
-            
-            
+        self.vs = 1.0
+        self.WriteHeader()
+    def WriteHeader(self):   
+        '''
+        gives out all the info at startup
+        '''
+        print(sys.version_info[0])
+        if (sys.version_info[0] == 3):
+            print(' we have python 3')
+            self.vers = 3
+        else:
+            print('you are behind the curve with python2')
+            self.vers = 2
+       
+        
+        print('\n \n \n')    
+        
+        print('****************************************************************** \n')   
+        print('hello this is the LCWA speedtest version',self.vs)
+        print('Written by Andi Klein')
+        print('Run date',datetime.datetime.now()) 
+        print('Speedtest host', self.st.host) 
+        print('****************************************************************** \n')   
+        print('\n \n \n')    
     def GetArguments(self):
         """
         this method deals with arguments parsed
@@ -82,7 +103,7 @@ class test_speed():
 
             if(self.vers == 2):
                 
-                print 'ping = ',pingi, ' download speed Mb/sec = ',downloadi, 'upload_speed Mb/sec = ',uploadi
+                print( 'ping = ',pingi, ' download speed Mb/sec = ',downloadi, 'upload_speed Mb/sec = ',uploadi)
             else:
                 print('ping = ',pingi, ' download speed Mb/sec = ',downloadi, 'upload_speed Mb/sec = ',uploadi)
 

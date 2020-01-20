@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
+
+'''
+modified by ak, basically the error handling now done better. It
+gives 10 tries, until it gives up. Each try is loner wait. The formula is
+number of tries * 10 seconds and the maximum number is 10, so after 10*10 sec
+it will go away
+'''
 from __future__ import print_function
 
 import argparse
@@ -15,7 +23,8 @@ import platform
 
 from math import sqrt
 from threading import currentThread, Thread
-from time import time
+#from time import time
+import time
 
 try:
     from httplib import HTTPConnection
@@ -60,6 +69,7 @@ class SpeedTest(object):
         self._host = host
         self.http_debug = http_debug
         self.runs = runs
+        self.try_counter = 0 # needed for timing out gracefully if we can't connect
 
     @property
     def host(self):
@@ -72,14 +82,32 @@ class SpeedTest(object):
         self._host = new_host
 
     def connect(self, url):
+        print(self.try_counter)
         try:
             connection = HTTPConnection(url)
             connection.set_debuglevel(self.http_debug)
             connection.connect()
             return connection
         except:
+            self.error_connect(url)
+            self.try_counter = self.try_counter+1
+    def error_connect(self,url):
+        print('Unable to connect to %r' % url)
+        sleeptime = self.try_counter*10
+        print('try again in',sleeptime,' seconds')
+        time.sleep(sleeptime)
+        self.try_counter = self.try_counter+1
+        print(self.try_counter)
+        if self.try_counter > 10:
+            print('your internet is down, I will exit now')
+            sys.exit()
             raise Exception('Unable to connect to %r' % url)
+        else:
+            self.connect(self.host)
 
+
+  
+        
     def downloadthread(self, connection, url):
         connection.request('GET', url, None, {'Connection': 'Keep-Alive'})
         response = connection.getresponse()
