@@ -23,7 +23,7 @@ import platform
 
 from math import sqrt
 from threading import currentThread, Thread
-#from time import time
+from time import time
 import time
 
 try:
@@ -119,14 +119,14 @@ class SpeedTest(object):
         connections = [
             self.connect(self.host) for i in range(self.runs)
         ]
-        total_start_time = time()
+        total_start_time = time.time()
         for current_file in SpeedTest.DOWNLOAD_FILES:
             threads = []
             for run in range(self.runs):
                 thread = Thread(
                     target=self.downloadthread,
                     args=(connections[run],
-                          '%s?x=%d' % (current_file, int(time() * 1000))))
+                          '%s?x=%d' % (current_file, int(time.time() * 1000))))
                 thread.run_number = run + 1
                 thread.start()
                 threads.append(thread)
@@ -135,7 +135,7 @@ class SpeedTest(object):
                 total_downloaded += thread.downloaded
                 LOG.debug('Run %d for %s finished',
                           thread.run_number, current_file)
-        total_ms = (time() - total_start_time) * 1000
+        total_ms = (time.time() - total_start_time) * 1000
         for connection in connections:
             connection.close()
         LOG.info('Took %d ms to download %d bytes',
@@ -163,7 +163,7 @@ class SpeedTest(object):
         ]
 
         total_uploaded = 0
-        total_start_time = time()
+        total_start_time = time.time()
         for data in post_data:
             threads = []
             for run in range(self.runs):
@@ -177,7 +177,7 @@ class SpeedTest(object):
                 LOG.debug('Run %d for %d bytes finished',
                           thread.run_number, thread.uploaded)
                 total_uploaded += thread.uploaded
-        total_ms = (time() - total_start_time) * 1000
+        total_ms = (time.time() - total_start_time) * 1000
         for connection in connections:
             connection.close()
         LOG.info('Took %d ms to upload %d bytes',
@@ -192,7 +192,7 @@ class SpeedTest(object):
         times = []
         worst = 0
         for _ in range(5):
-            total_start_time = time()
+            total_start_time = time.time()
             connection.request(
                 'GET',
                 '/speedtest/latency.txt?x=%d' % randint(),
@@ -200,7 +200,7 @@ class SpeedTest(object):
                 {'Connection': 'Keep-Alive'})
             response = connection.getresponse()
             response.read()
-            total_ms = time() - total_start_time
+            total_ms = time.time() - total_start_time
             times.append(total_ms)
             if total_ms > worst:
                 worst = total_ms
@@ -212,7 +212,7 @@ class SpeedTest(object):
 
     def chooseserver(self):
         connection = self.connect('www.speedtest.net')
-        now = int(time() * 1000)
+        now = int(time.time() * 1000)
         # really contribute to speedtest.net OS statistics
         # maybe they won't block us again...
         extra_headers = {
