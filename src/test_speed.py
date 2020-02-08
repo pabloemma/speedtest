@@ -26,14 +26,7 @@ class test_speed():
     
     
     def __init__(self,server,chosentime):
-        print (' in init')
-        # before we do anything, let's determine the python version
-        if (sys.version_info[0] == 3):
-            print(' we have python 3')
-            self.vers = 3
-        else:
-            print('you are behind the curve with python2')
-            self.vers = 2
+        print (' in init')        # before we do anything, let's determine the python version
 
         self.chosentime = chosentime # how long to wait in seconds before next reading
         self.st = pyspeedtest.SpeedTest()  #instantiate class
