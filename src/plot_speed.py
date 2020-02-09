@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 '''
 Created on Jan 23, 2020
 
@@ -22,9 +24,10 @@ y2 =[]
 #duration =1000
 
 
-filename = "/Users/klein/speedfiles/2020-02-08speedfile.csv"        
+filename = "/Users/klein/speedfiles/2020-02-09speedfile.csv"        
 x1,y1,y2 = np.loadtxt(filename, delimiter=',',
-                   unpack=True,usecols=(1,3,4),
+                   unpack=True,usecols=(1,7,8),
+#        converters={ 1: md.strpdate2num('%d/%m/%Y-%H:%M:%S')})
         converters={ 1: md.strpdate2num('%H:%M:%S')})
         #converters={ 0: md.strpdate2num('%d/%m/%Y')})
 
@@ -37,7 +40,7 @@ plt.xlabel('Time')
 plt.ylabel('Speed in Mbs')
 plt.title('Speedtest LCWA')
 plt.legend()
-plt.ylim(0.,21.) # set yaxis limit
+plt.ylim(0.,22.) # set yaxis limit
 plt.show()
 
 
