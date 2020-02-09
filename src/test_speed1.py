@@ -8,7 +8,7 @@ Created on Feb 8, 2020
 
 
 This is based on the CLI program from speedtest
-It basically provides a python wrapper around the speedtest, so tha we can fill
+It basically provides a python wrapper around the speedtest, so that we can fill
 the results in a file, which can then be plotted
 The original version of test_speed was pabsed on pyspeedtest and gave different results from
 the GUI
@@ -37,7 +37,7 @@ class test_speed1():
     
     
     def __init__(self,server,chosentime):
-        print (' in init')        # before we do anything, let's determine the python version
+        #print (' in init')        # before we do anything, let's determine the python version
 
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
@@ -64,7 +64,7 @@ class test_speed1():
         
         print('****************************************************************** \n')   
         print('hello this is the LCWA speedtest version',self.vs)
-        print('Written by Andi Klein')
+        print('Written by Andi Klein using the CLI from speedtedt')
         print('Run date',datetime.datetime.now()) 
         print('****************************************************************** \n')   
         print('\n \n \n')    
@@ -104,7 +104,6 @@ class test_speed1():
         # do our arguments
         args = parser.parse_args()
         #check if there are any arguments
-        print args
         
         
         
@@ -138,7 +137,7 @@ class test_speed1():
                 temp1.extend(t)
                 
         self.command = temp1 
-        print self.command      
+        #print self.command      
         return 
     
     def RunLoop(self):
@@ -167,7 +166,7 @@ class test_speed1():
         this is the heart of the wrapper, using the CLI command
         """
         
-        print self.command
+        #print self.command
         process = sp.Popen(self.command,
                          #stdout=outfile,
                          stdout=sp.PIPE,
