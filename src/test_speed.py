@@ -103,6 +103,7 @@ class test_speed():
             
             now=datetime.datetime.now()
             myline=now.strftime("%d/%m/%Y,%H:%M:%S")+','+str(pingi)+','+str(downloadi)+','+str(uploadi)+'\n'                
+#            myline=now.strftime("%d/%m/%Y-%H:%M:%S")+','+str(pingi)+','+str(downloadi)+','+str(uploadi)+'\n'                
 
             
             if(date.today()>self.current_day):
