@@ -19,7 +19,7 @@ we have to multiply the output by 8./1e6
 
 
  the output format is
- day,time,server name, server id,latency,jitter,package loss in %, download, updload 
+ day,time,server name, server id,latency,jitter,package loss in %, download, upload 
 '''
 
 import sys
@@ -28,7 +28,8 @@ import os
 import datetime
 import textwrap
 from datetime import  date 
-import argparse as argp  # we want to sue CLI
+import argparse as argp  # we want to use CLI
+import platform # need to determine the OS
 import subprocess as sp
 
 
@@ -99,9 +100,15 @@ class test_speed1():
         
     
         # here some of the defaults
-        temp1=["/usr/local/bin/speedtest","--progress=no","-f","csv"] # we want csv output by default
-                  
+        #Of courss Mac has the stuff in different places than Linux
+        if platform.system() == 'Darwin':
+            temp1=["/usr/local/bin/speedtest","--progress=no","-f","csv"] # we want csv output by default
+        elif platform.system() == 'Linux':
+            temp1=["/usr/bin/speedtest","--progress=no","-f","csv"] # we want csv output by default         
         # do our arguments
+        else:
+            print' Sorry we don\'t do Windows yet'
+            sys.exit(0)
         args = parser.parse_args()
         #check if there are any arguments
         
