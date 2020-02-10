@@ -14,12 +14,20 @@ import numpy as np
 import csv
 import time
 import sys
+import os.path
 
 
 for k in range(len(sys.argv)):
     print sys.argv
 if len(sys.argv)==2:
-    filename = sys.argv[1]
+    # check if file exists
+    if os.path.isfile((sys.argv[1])):
+        filename = sys.argv[1]
+    else:
+        print ("File does not exist")
+        sys.exit(0)
+    
+
 else:
     print( ' to run the program you have to give a filename \n plot_speed.py inputfile ')
     sys.exit(0)      
