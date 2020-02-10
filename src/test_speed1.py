@@ -65,7 +65,7 @@ class test_speed1():
         
         print('****************************************************************** \n')   
         print('hello this is the LCWA speedtest version',self.vs)
-        print('Written by Andi Klein using the CLI from speedtedt')
+        print('Written by Andi Klein using the CLI from speedtest')
         print('Run date',datetime.datetime.now()) 
         print('****************************************************************** \n')   
         print('\n \n \n')    
@@ -91,6 +91,7 @@ class test_speed1():
         parser.add_argument("-V","--version",action='store_true',help = "Print CLI version" )
         parser.add_argument("-o","--host",help = "Specify a server, from the server list, using its host's fully qualified dom" )
         parser.add_argument("-ip","--ip",help = "Attempt to bind to the specified IP address when connecting to servers" )
+        parser.add_argument("-t","--time",help = "time between succssive speedtests in minutes (integer)" )
         #parser.add_argument("-ip","--ip=ARG",help = "Attempt to bind to the specified IP address when connecting to servers" )
         
         
@@ -119,6 +120,7 @@ class test_speed1():
             se =['-s','18002']
             temp1.extend(se)
             self.command = temp1
+            self.loop_time = 60 # default 2 minutes before next speedtest
             return
         else:
             if(args.servers):
@@ -142,6 +144,8 @@ class test_speed1():
             if(args.host != None):
                 t=['--host=',args.host]
                 temp1.extend(t)
+            if(args.time != None):
+                self.loop_time = int(args.time)*60 # time between speedtests
                 
         self.command = temp1 
         #print self.command      
@@ -153,7 +157,7 @@ class test_speed1():
         """
         while(1):
             self.Run()
-            time.sleep(60)
+            time.sleep(self.loop_time)
             
     def RunShort(self):    
         process = sp.Popen(self.command,
@@ -212,6 +216,7 @@ class test_speed1():
         #First rempve all double quotes
         tt=inc1.replace('"','')
         inc=tt.split(',')
+        print inc # for debugging
         self.output.append(inc[0])
         self.output.append(int(inc[2]))
         for k in  [3,4,5]:
