@@ -43,7 +43,7 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = 2.0
+        self.vs = 2.01
         self.WriteHeader()
         
     def WriteHeader(self):   
