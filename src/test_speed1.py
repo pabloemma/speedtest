@@ -216,7 +216,7 @@ class test_speed1():
         #First rempve all double quotes
         tt=inc1.replace('"','')
         inc=tt.split(',')
-        #print inc # for debugging
+        print inc # for debugging
         self.output.append(inc[0])
         self.output.append(int(inc[2]))
         for k in  [3,4,5]:
