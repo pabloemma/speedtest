@@ -143,7 +143,7 @@ class test_speed1():
 
                     self.command = ["/usr/local/bin/speedtest", '-L'] #because argparse does not take single args
                 elif platform.system() == 'Linux':
-                    self.command=["/usr/bin/speedtest",'L'] # we want csv output by default         
+                    self.command=["/usr/bin/speedtest",'-L'] # we want csv output by default         
                    
                 
                 self.RunShort()
