@@ -31,6 +31,7 @@ from datetime import  date
 import argparse as argp  # we want to use CLI
 import platform # need to determine the OS
 import subprocess as sp
+from test.test_socket import try_address
 
 
 class test_speed1():
@@ -43,7 +44,7 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = 2.02
+        self.vs = 2.03
         self.WriteHeader()
         
     def WriteHeader(self):   
@@ -69,8 +70,8 @@ class test_speed1():
         print('Run date',datetime.datetime.now()) 
         print('\n ')    
         
-        print('version ',self.vs, '  trying to catch the random bad data sent by the CLI')
-
+        print('version 2.02', '  trying to catch the random bad data sent by the CLI')
+        print('version 2.03', ' fixed conversion problem for N/A')
         print('****************************************************************** \n')   
         print('\n \n \n')    
 
@@ -234,10 +235,23 @@ class test_speed1():
         self.output.append(inc[0])
         self.output.append(int(inc[2]))
         for k in  [3,4,5]:
-            self.output.append(float(inc[k]))
+            try:
+                float(inc[k])
+                self.output.append(float(inc[k]))
+            except ValueError:
+                print('bad int conversion')
+                self.output.append(-10000.)
+            
             
         for k in  [6,7] :
-            self.output.append(float(inc[k])*8./1000000)
+            try:
+                float(inc[k])
+            
+                self.output.append(float(inc[k])*8./1000000)
+            except ValueError:
+                print('bad float conversion')
+                self.output.append(-999.)
+                
             
         return 
 
