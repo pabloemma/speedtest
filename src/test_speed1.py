@@ -31,7 +31,7 @@ from datetime import  date
 import argparse as argp  # we want to use CLI
 import platform # need to determine the OS
 import subprocess as sp
-from test.test_socket import try_address
+
 
 
 class test_speed1():
@@ -44,7 +44,7 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = 2.03.1
+        self.vs = '2.03.1'
         self.WriteHeader()
         
     def WriteHeader(self):   
