@@ -43,7 +43,7 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = 2.01
+        self.vs = 2.02
         self.WriteHeader()
         
     def WriteHeader(self):   
@@ -67,6 +67,10 @@ class test_speed1():
         print('hello this is the LCWA speedtest version',self.vs)
         print('Written by Andi Klein using the CLI from speedtest')
         print('Run date',datetime.datetime.now()) 
+        print('\n ')    
+        
+        print('version ',self.vs, '  trying to catch the random bad data sent by the CLI')
+
         print('****************************************************************** \n')   
         print('\n \n \n')    
 
@@ -216,6 +220,16 @@ class test_speed1():
         #First rempve all double quotes
         tt=inc1.replace('"','')
         inc=tt.split(',')
+
+        # cehck data integrity
+        if(len(inc) < 2):
+            print('bad data block')
+            return
+        if(len(inc) != 11):
+            print('bad block length')
+            return
+        
+        
         print inc # for debugging
         self.output.append(inc[0])
         self.output.append(int(inc[2]))
