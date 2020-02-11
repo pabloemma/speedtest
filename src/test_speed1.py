@@ -44,7 +44,7 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = 2.03
+        self.vs = 2.03.1
         self.WriteHeader()
         
     def WriteHeader(self):   
@@ -75,7 +75,17 @@ class test_speed1():
         print('****************************************************************** \n')   
         print('\n \n \n')    
 
+    def Progress(self):
+        """
+        keep track of the updates
+        """
+        
+        print('version 2.02', '  trying to catch the random bad data sent by the CLI')
+        print('version 2.03', ' fixed conversion problem for N/A')
+        print('        version 2.03.1', ' fixed rasp problem wit -L and -V')
 
+        
+        
     def GetArguments(self):
         """
         this method deals with arguments parsed
@@ -129,12 +139,22 @@ class test_speed1():
             return
         else:
             if(args.servers):
-                self.command = ["/usr/local/bin/speedtest", '-L'] #because argparse does not take single args
+                if platform.system() == 'Darwin':
+
+                    self.command = ["/usr/local/bin/speedtest", '-L'] #because argparse does not take single args
+                elif platform.system() == 'Linux':
+                    self.command=["/usr/bin/speedtest",'L'] # we want csv output by default         
+                   
+                
                 self.RunShort()
                 sys.exit(0)
             if(args.version):
+                if platform.system() == 'Darwin':
+
+                    self.command = ["/usr/local/bin/speedtest", '-V'] #because argparse does not take single args
+                elif platform.system() == 'Linux':
+                    self.command=["/usr/bin/speedtest",'-V'] # we want csv output by default         
                 
-                self.command = ["/usr/local/bin/speedtest", '-V'] #because argparse does not take single args
                 self.RunShort()
                 sys.exit(0)
                 
