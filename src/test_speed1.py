@@ -31,7 +31,12 @@ from datetime import  date
 import argparse as argp  # we want to use CLI
 import platform # need to determine the OS
 import subprocess as sp
-
+import dropbox
+from Crypto.Util.Padding import pad, unpad
+import base64
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+from __builtin__ import True
 
 
 class test_speed1():
@@ -44,8 +49,42 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = '2.03.1'
+        self.vs = '3.00.0'
         self.WriteHeader()
+        
+        self.DropFlag = False # default no dropbox connection
+        
+
+    def ConnectDropBox(self):
+        """
+        here we establish connection to the dropbox account
+        """
+        #f=open(self.keyfile,"r")
+        #self.key =f.readline() #key for encryption
+        #self.key = pad(self.key,16)
+        #f.close()
+
+        f=open(self.cryptofile,"r")
+        self.data =f.readline() #key for encryption
+        #self.data=self.data.strip('\n')
+        #print self.data,self.data
+        #f.close()
+        #enc = base64.b64decode(self.data)
+        #iv = enc[:16]
+        #cipher = AES.new(self.key, AES.MODE_CBC, iv )
+        #print type(unpad(cipher.decrypt( enc[16:] ),16))
+        
+
+         
+         
+         
+         #connect to dropbox
+        #self.dbx=dropbox.Dropbox(unpad(cipher.decrypt( enc[16:] ),16))
+        self.dbx=dropbox.Dropbox(self.data.strip('\n'))
+
+        self.myaccount = self.dbx.users_get_current_account()
+        print self.myaccount 
+        
         
     def WriteHeader(self):   
         '''
@@ -70,20 +109,20 @@ class test_speed1():
         print('Run date',datetime.datetime.now()) 
         print('\n ')    
         
-        print('version 2.02', '  trying to catch the random bad data sent by the CLI')
-        print('version 2.03', ' fixed conversion problem for N/A')
         print('****************************************************************** \n')   
-        print('\n \n \n')    
+        print('\n \n \n')  
+        self.Progress()  
 
     def Progress(self):
         """
         keep track of the updates
         """
-        
+        print(' History')
         print('version 2.02', '  trying to catch the random bad data sent by the CLI')
         print('version 2.03', ' fixed conversion problem for N/A')
         print('        version 2.03.1', ' fixed rasp problem wit -L and -V')
-
+        print('version 3.00.0', 'connect to dropbox and store file every 50 entries')
+        print('\n\n\n')
         
         
     def GetArguments(self):
@@ -97,6 +136,11 @@ class test_speed1():
             epilog=textwrap.dedent('''
             Output format:
             day,time,server name, server id,latency[ms],jitter[ms],package loss[%], download Mb/s, updload Mb/s
+            If you don't  give a filename for the password and the key, \n
+            you will not coinnect to the output
+            dropbox 
+             
+             
              '''))
 
         
@@ -107,6 +151,9 @@ class test_speed1():
         parser.add_argument("-o","--host",help = "Specify a server, from the server list, using its host's fully qualified dom" )
         parser.add_argument("-ip","--ip",help = "Attempt to bind to the specified IP address when connecting to servers" )
         parser.add_argument("-t","--time",help = "time between succssive speedtests in minutes (integer)" )
+        #parser.add_argument("-p","--pwfile",help = "The passwordfile" )
+        parser.add_argument("-d","--dpfile",help = "The file for the dropbox" )
+
         #parser.add_argument("-ip","--ip=ARG",help = "Attempt to bind to the specified IP address when connecting to servers" )
         
         
@@ -129,13 +176,14 @@ class test_speed1():
         #check if there are any arguments
         
         
+        self.loop_time = 60 # default 1 minutes before next speedtest
         
         if(len(sys.argv) == 1):
             # we need to give it a server as default use cyber mesa
             se =['-s','18002']
             temp1.extend(se)
             self.command = temp1
-            self.loop_time = 60 # default 2 minutes before next speedtest
+            #self.keyfile('LCWA_p.txt')
             return
         else:
             if(args.servers):
@@ -172,6 +220,13 @@ class test_speed1():
             if(args.time != None):
                 self.loop_time = int(args.time)*60 # time between speedtests
                 
+            #if(args.pwfile != None ) and (args.dpfile != None):
+            if(args.dpfile != None):
+                #self.keyfile = args.pwfile
+                self.cryptofile = args.dpfile
+                self.DropFlag = True
+                self.ConnectDropBox() # establish the contact to dropbox
+                
         self.command = temp1 
         #print self.command      
         return 
@@ -180,9 +235,26 @@ class test_speed1():
         """
         calls run and forms the loop
         """
+        counter = 0
         while(1):
             self.Run()
+            if(self.ConnectDropBox):
+                counter = counter + 1
+            
+                if (counter==50):
+                    
+ 
+                    
+                    
+                    
+                    f =open(self.lcwa_filename,"rb")
+                    self.dbx.files_upload(f.read(),'/LCWA/'+self.docfile,mode=dropbox.files.WriteMode('overwrite', None))
+                    print('wrote dropbox file')
+                    counter = 0 
+
             time.sleep(self.loop_time)
+
+            
             
     def RunShort(self):    
         process = sp.Popen(self.command,
@@ -286,8 +358,10 @@ class test_speed1():
         # if filename exists we open in append mode
         #otherwise we will create it
         homedir = os.environ['HOME']
+        self.docfile = filename #filename for dropbox
         filename = homedir + '/speedfiles/'+filename
         print filename
+        self.lcwa_filename = filename
         if os.path.isfile(filename):
             self.output_file = open(filename,'a',0)
         else :
