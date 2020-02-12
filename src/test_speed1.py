@@ -49,7 +49,7 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = '3.00.0'
+        self.vs = '3.01.0'
         self.WriteHeader()
         
         self.DropFlag = False # default no dropbox connection
@@ -121,7 +121,8 @@ class test_speed1():
         print('version 2.02', '  trying to catch the random bad data sent by the CLI')
         print('version 2.03', ' fixed conversion problem for N/A')
         print('        version 2.03.1', ' fixed rasp problem wit -L and -V')
-        print('version 3.00.0', 'connect to dropbox and store file every 50 entries')
+        print('version 3.01.0', 'connect to dropbox and store file every 50 entries')
+        print('        3.01.1', 'added header line to output')
         print('\n\n\n')
         
         
@@ -186,6 +187,7 @@ class test_speed1():
             #self.keyfile('LCWA_p.txt')
             return
         else:
+            
             if(args.servers):
                 if platform.system() == 'Darwin':
 
@@ -295,7 +297,7 @@ class test_speed1():
             myline=myline+str(self.output[k])+','
         myline = myline+str(self.output[len(self.output)-1])+'\n'
 
-        print myline
+        #print myline
         self.output_file.write(myline)
         
         
@@ -366,9 +368,18 @@ class test_speed1():
             self.output_file = open(filename,'a',0)
         else :
             self.output_file = open(filename,'w',0)
+            self.WriteOutputHeader() # first time we write a header
             
-    
-    
+            
+    def WriteOutputHeader(self):       
+        """
+        Write the header for the output file
+        """
+        Header = 'day,time,server name, server id,latency,jitter,package , download, upload \n'
+        self.output_file.write(Header)
+        
+        
+        
 if __name__ == '__main__':
     
     server1 = 'speed-king.cybermesa.com:8080'
@@ -376,6 +387,7 @@ if __name__ == '__main__':
     ts = test_speed1(server=server1,chosentime=60)
     ts.GetArguments()  #commandline args
     ts.OpenFile()  #output file
+    
 #    ts.GetArguments()
 #    ts.OpenFile()
     ts.RunLoop()
