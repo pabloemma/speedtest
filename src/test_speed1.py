@@ -37,6 +37,7 @@ import base64
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from __builtin__ import True
+from Carbon.Aliases import true
 
 
 class test_speed1():
@@ -49,7 +50,6 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = '3.02.1'
         self.WriteHeader()
         
         self.DropFlag = False # default no dropbox connection
@@ -120,6 +120,9 @@ class test_speed1():
         """
         keep track of the updates
         """
+        self.vs = '3.02.2'
+
+        
         print(' History')
         print('version 2.02', '  trying to catch the random bad data sent by the CLI')
         print('version 2.03', ' fixed conversion problem for N/A')
@@ -129,6 +132,7 @@ class test_speed1():
         print('version 3.02.0', ' - made cybermesa default server unless requested ')
         print('                     - at midnight we open a new file')
         print('version 3.02.1',' print some info on dropbox')
+        print('version 3.02.2',' write dropbox file around the half hour mark')
         print('\n\n\n')
         
         
@@ -249,13 +253,17 @@ class test_speed1():
         calls run and forms the loop
         """
         counter = 0
+        
+        
+        
         while(1):
             self.Run()
             if(self.ConnectDropBox):
                 counter = counter + 1
             
-                if (counter==50):
-                    
+                #if (counter==50):
+                if( self.WriteTimer()):
+                    # we write always around xx:30 
  
                     
                     
@@ -268,6 +276,38 @@ class test_speed1():
             time.sleep(self.loop_time)
 
             
+    def WriteTimer(self):
+        """
+        determines the time
+        so that we fill the dropbox file every hour
+        """ 
+        
+        #determine the current time
+        b=  datetime.datetime.now()
+        #fill in tuple
+        a=b.timetuple()
+        # this is really a structure with 
+        # a.tm_hour
+        # a.tm_min
+        # a.tm_sec the various elements
+        # we want to make sure that our a.tm_min is between in a window around 30 minutes
+        # given by self.loop_time, which is in seconds
+        temp = int(self.loop_time/60.)
+        if(temp < 2): temp =2
+        temp = temp/2
+        # if we get negative time, that means we sleep longer than 60 minutes
+        if(30 - temp <0): 
+            return True # this way we write whenever we did a speedtest
+        # then we should just continue to write always at x:30
+        # now comes the test
+        if( a.tm_min > 30 - temp) and ( a.tm_min < 30 + temp):
+            return True
+        else:
+            return False
+        
+        
+        
+        
             
     def RunShort(self):    
         process = sp.Popen(self.command,
