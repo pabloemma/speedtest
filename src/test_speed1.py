@@ -47,12 +47,7 @@ import argparse as argp  # we want to use CLI
 import platform # need to determine the OS
 import subprocess as sp
 import dropbox
-from Crypto.Util.Padding import pad, unpad
-import base64
-from Crypto.Cipher import AES
-from Crypto.Random import get_random_bytes
 from __builtin__ import True
-#from Carbon.Aliases import true
 
 
 class test_speed1():
