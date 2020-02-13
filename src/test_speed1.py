@@ -1,4 +1,13 @@
 #!/usr/bin/env python
+### BEGIN INIT INFO for raspi startup
+# Provides:          sample.py
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start daemon at boot time
+# Description:       Enable service provided by daemon.
+### END INIT INFO
 
 
 '''
@@ -55,6 +64,21 @@ class test_speed1():
         self.DropFlag = False # default no dropbox connection
         
 
+        # check if we have espeak
+        
+
+#    give an audio signal that program is starting
+        if platform.system() == 'Darwin':
+            try:
+                sp.call('/usr/local/bin/espeak " LCWA speedtest starting on Raspberry Pi"',shell=True)
+            except:
+                print 'nospeak'
+        elif platform.system() == 'Linux':
+            try:
+                sp.call('/usr/bin/espeak " LCWA speedtest starting on Raspberry Pi"',shell=True)
+            except:
+                print 'nospeak'
+    
     def ConnectDropBox(self):
         """
         here we establish connection to the dropbox account
@@ -107,7 +131,7 @@ class test_speed1():
         print('\n \n \n')    
         
         print('****************************************************************** \n')   
-        print('hello this is the LCWA speedtest version',self.vs)
+        print('hello this is the LCWA speedtest version',self.vers)
         print('Written by Andi Klein using the CLI from speedtest')
         print('Run date',datetime.datetime.now()) 
         print('\n ')    
@@ -120,7 +144,7 @@ class test_speed1():
         """
         keep track of the updates
         """
-        self.vs = '3.02.2'
+        self.vs = '3.02.3'
 
         
         print(' History')
@@ -133,6 +157,9 @@ class test_speed1():
         print('                     - at midnight we open a new file')
         print('version 3.02.1',' print some info on dropbox')
         print('version 3.02.2',' write dropbox file around the half hour mark')
+        print('Version 3.02.3', ' Included a header which is needed for the raspberry pi to start test_speed1 at boot')
+        print('                     - gives an acoustic signal at startup')
+
         print('\n\n\n')
         
         
