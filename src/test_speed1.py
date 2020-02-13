@@ -49,7 +49,7 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = '3.01.0'
+        self.vs = '3.02.0'
         self.WriteHeader()
         
         self.DropFlag = False # default no dropbox connection
@@ -123,6 +123,8 @@ class test_speed1():
         print('        version 2.03.1', ' fixed rasp problem wit -L and -V')
         print('version 3.01.0', 'connect to dropbox and store file every 50 entries')
         print('        3.01.1', 'added header line to output')
+        print('version 3.02.0', ' - made cybermesa default server unless requested ')
+        print('                     - at midnight we open a new file')
         print('\n\n\n')
         
         
@@ -187,7 +189,7 @@ class test_speed1():
             #self.keyfile('LCWA_p.txt')
             return
         else:
-            
+            #make cyber mesa the default
             if(args.servers):
                 if platform.system() == 'Darwin':
 
@@ -211,6 +213,11 @@ class test_speed1():
             if(args.serverid != None):
                 t=['-s',args.serverid]
                 temp1.extend(t)
+            else: # make cybermesa the default
+                t=['-s','18002']
+                temp1.extend(t)
+              
+            
 
             if(args.ip != None):
                 t=['--ip=',args.ip]
@@ -297,6 +304,14 @@ class test_speed1():
             myline=myline+str(self.output[k])+','
         myline = myline+str(self.output[len(self.output)-1])+'\n'
 
+        
+        #check for date, we will open new file at midnight
+        if(date.today()>self.current_day):
+                #we have a new day
+            self.output_file.close()
+            self.OpenFile()
+
+        
         #print myline
         self.output_file.write(myline)
         
