@@ -52,7 +52,7 @@ import base64
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from __builtin__ import True
-from Carbon.Aliases import true
+#from Carbon.Aliases import true
 
 
 class test_speed1():
