@@ -49,7 +49,7 @@ class test_speed1():
         self.chosentime = chosentime # how long to wait in seconds before next reading
           
             
-        self.vs = '3.02.0'
+        self.vs = '3.02.1'
         self.WriteHeader()
         
         self.DropFlag = False # default no dropbox connection
@@ -83,7 +83,10 @@ class test_speed1():
         self.dbx=dropbox.Dropbox(self.data.strip('\n'))
 
         self.myaccount = self.dbx.users_get_current_account()
-        print self.myaccount 
+        print('***************************dropbox*******************\n\n\n')
+        print self.myaccount.name.surname , self.myaccount.name.given_name
+        print self.myaccount.email
+        print('\n\n ***************************dropbox*******************\n')
         
         
     def WriteHeader(self):   
@@ -125,6 +128,7 @@ class test_speed1():
         print('        3.01.1', 'added header line to output')
         print('version 3.02.0', ' - made cybermesa default server unless requested ')
         print('                     - at midnight we open a new file')
+        print('version 3.02.1',' print some info on dropbox')
         print('\n\n\n')
         
         
