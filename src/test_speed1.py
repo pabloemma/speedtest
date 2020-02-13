@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 ### BEGIN INIT INFO for raspi startup
-# Provides:          sample.py
+# Provides:          test_speed1.py
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
@@ -29,6 +29,12 @@ we have to multiply the output by 8./1e6
 
  the output format is
  day,time,server name, server id,latency,jitter,package loss in %, download, upload 
+
+
+For raspi startup we need to
+sudo cp test_speed1.py /etc/init.d
+sudo update-rc.d test_speed1.py defaults
+
 '''
 
 import sys
