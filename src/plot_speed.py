@@ -47,10 +47,12 @@ if(drop):
 #connect to dropbox
     dbx=dropbox.Dropbox(data)
     myaccount = dbx.users_get_current_account()
-    print('***************************dropbox*******************\n\n\n')
+    print('***************************dropbox************************************')
+    print('*                                                                    *')
     print myaccount.name.surname , myaccount.name.given_name
     print myaccount.email
-    print('\n\n ***************************dropbox*******************\n')
+    print('*                                                                    *')
+    print('***************************dropbox************************************')
 
 # get dropbox file
 
