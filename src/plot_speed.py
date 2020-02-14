@@ -17,7 +17,7 @@ import sys
 import os.path
 import dropbox
 
-
+drop = False
 for k in range(len(sys.argv)):
     print sys.argv
 if len(sys.argv)==2:
@@ -25,6 +25,7 @@ if len(sys.argv)==2:
     try:
         if os.path.isfile((sys.argv[1])):
             filename = sys.argv[1]
+            file1=filename
     except:
         print('no file')
         sys.exit(0)
@@ -38,20 +39,21 @@ else:
     sys.exit(0)
     
 # connect to dropbox
-f=open(sys.argv[2],"r")
-data =f.readline() #key for encryption
-data=data.strip('\n')
+if(drop):
+    f=open(sys.argv[2],"r")
+    data =f.readline() #key for encryption
+    data=data.strip('\n')
 
 #connect to dropbox
-dbx=dropbox.Dropbox(data)
-myaccount = dbx.users_get_current_account()
-print('***************************dropbox*******************\n\n\n')
-print myaccount.name.surname , myaccount.name.given_name
-print myaccount.email
-print('\n\n ***************************dropbox*******************\n')
+    dbx=dropbox.Dropbox(data)
+    myaccount = dbx.users_get_current_account()
+    print('***************************dropbox*******************\n\n\n')
+    print myaccount.name.surname , myaccount.name.given_name
+    print myaccount.email
+    print('\n\n ***************************dropbox*******************\n')
 
 # get dropbox file
-if(drop):
+
     file = '/LCWA/'+ sys.argv[1]
     dir = os.path.expanduser("~")
     file1 = dir+'/scratch/'+sys.argv[1]
@@ -74,13 +76,19 @@ x1,y1,y2 = np.loadtxt(file1, delimiter=',',
         converters={ 1: md.strpdate2num('%H:%M:%S')},skiprows=1)
         #converters={ 0: md.strpdate2num('%d/%m/%Y')})
 
+
+
+fig=plt.figure()
+ax=fig.add_subplot(1,1,1)
+
+
 plt.plot_date(x1,y1,'g^',label=file1+'\n green UP \n blue DOWN')
 plt.plot_date(x1,y2,'bs')
 #plt.text(1.,1.,r' $\sigma = .1$')
 plt.grid(True)
 
-
-
+ax.xaxis.set_major_locator(md.MinuteLocator(interval=60))
+ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M'))
 plt.xlabel('Time')
 plt.ylabel('Speed in Mbs')
 plt.title('Speedtest LCWA')
