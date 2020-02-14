@@ -74,11 +74,11 @@ x1,y1,y2 = np.loadtxt(file1, delimiter=',',
         converters={ 1: md.strpdate2num('%H:%M:%S')},skiprows=1)
         #converters={ 0: md.strpdate2num('%d/%m/%Y')})
 
-plt.plot_date(x1,y1,'g^',label=file1+'\n blue UP \n red DOWN')
+plt.plot_date(x1,y1,'g^',label=file1+'\n green UP \n blue DOWN')
 plt.plot_date(x1,y2,'bs')
 #plt.text(1.,1.,r' $\sigma = .1$')
 plt.grid(True)
-#plt.plot(x2,y2,"r-")
+
 
 
 plt.xlabel('Time')
