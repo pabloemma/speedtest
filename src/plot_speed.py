@@ -92,8 +92,8 @@ fig=plt.figure()
 ax=fig.add_subplot(1,1,1)
 
 
-plt.plot_date(x1,y1,'g^',label=file1+'\n green UP \n blue DOWN')
-plt.plot_date(x1,y2,'bs')
+plt.plot_date(x1,y1,'g^',label='\n green UP')
+plt.plot_date(x1,y2,'bs',label=' blue DOWN')
 #plt.text(1.,1.,r' $\sigma = .1$')
 plt.grid(True)
 
@@ -101,10 +101,11 @@ ax.xaxis.set_major_locator(md.MinuteLocator(interval=60))
 ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M'))
 plt.xlabel('Time')
 plt.ylabel('Speed in Mbs')
-plt.title('Speedtest LCWA')
-plt.legend()
+plt.title('Speedtest LCWA using '+file)
+plt.legend(loc="lower right",shadow=True, fancybox=True)
 plt.ylim(0.,24.) # set yaxis limit
 plt.xticks(rotation='vertical')
+plt.tight_layout()
 plt.show()
 
 
