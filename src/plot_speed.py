@@ -70,8 +70,6 @@ temp_file = open('temp.txt',"w")
 for line in open(file1, 'r'):
 
     a = line.split(',')
-    print a
-    print line
     if(len(a)< 9):
         print ('problem',a)
     else:
@@ -105,7 +103,7 @@ plt.xlabel('Time')
 plt.ylabel('Speed in Mbs')
 plt.title('Speedtest LCWA')
 plt.legend()
-plt.ylim(0.,22.) # set yaxis limit
+plt.ylim(0.,24.) # set yaxis limit
 plt.xticks(rotation='vertical')
 plt.show()
 
