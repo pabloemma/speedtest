@@ -18,8 +18,8 @@ import os.path
 import dropbox
 
 drop = False
-for k in range(len(sys.argv)):
-    print sys.argv
+#for k in range(len(sys.argv)):
+#    print sys.argv
 if len(sys.argv)==2:
     # check if file exists
     try:
@@ -58,7 +58,7 @@ if(drop):
     dir = os.path.expanduser("~")
     file1 = dir+'/scratch/'+sys.argv[1]
     filename = dbx.files_download_to_file(file1,file)
-    print filename         
+    #print filename         
 x1 = []
 y1 = []
 x2 = []
@@ -67,13 +67,16 @@ y2 =[]
 # check for data integrtity by writing file to temporary buffer
 
 temp_file = open('temp.txt',"w")
+counter = 0
 for line in open(file1, 'r'):
 
     a = line.split(',')
     if(len(a)< 9):
         print ('problem',a)
+        print ('ignore data point at line ',counter+1)
     else:
         temp_file.write(line)
+    counter = counter + 1
 f.close()
 temp_file.close()
    
@@ -90,7 +93,7 @@ x1,y1,y2 = np.loadtxt('temp.txt', delimiter=',',
 np.set_printoptions(precision=2)
 fig=plt.figure() 
 ax=fig.add_subplot(1,1,1)
-ax.text(.1,.36,'Results: average and standard deviation',transform=ax.transAxes,fontsize=13)
+ax.text(.1,.36,'Average $\mu$ and Standard deviation $\sigma$',weight='bold',transform=ax.transAxes,fontsize=13)
 ax.text(.1,.23,r'$\mu_{up}     = $'+str(np.around(np.mean(y1),2))+' '+'[Mb/s]'+r'   $\sigma_{up} =     $'+str(np.around(np.std(y1),2)),transform=ax.transAxes,fontsize=12)
 ax.text(.1,.3,r'$\mu_{down} = $'+str(np.around(np.mean(y2),2))+' '+'[Mb/s]'+r'   $\sigma_{down} = $'+str(np.around(np.std(y2),2)),transform=ax.transAxes,fontsize=12)
 
