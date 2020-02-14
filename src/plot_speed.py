@@ -64,13 +64,25 @@ y1 = []
 x2 = []
 y2 =[]
 
-# for date plotting
-#n=20
-#duration =1000
+# check for data integrtity by writing file to temporary buffer
+
+temp_file = open('temp.txt',"w")
+for line in open(file1, 'r'):
+
+    a = line.split(',')
+    print a
+    print line
+    if(len(a)< 9):
+        print ('problem',a)
+    else:
+        temp_file.write(line)
+f.close()
+temp_file.close()
+   
 
 
 #filename = "/Users/klein/speedfiles/2020-02-09speedfile.csv"        
-x1,y1,y2 = np.loadtxt(file1, delimiter=',',
+x1,y1,y2 = np.loadtxt('temp.txt', delimiter=',',
                    unpack=True,usecols=(1,7,8),
 #        converters={ 1: md.strpdate2num('%d/%m/%Y-%H:%M:%S')})
         converters={ 1: md.strpdate2num('%H:%M:%S')},skiprows=1)
