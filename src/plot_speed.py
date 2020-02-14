@@ -87,13 +87,14 @@ x1,y1,y2 = np.loadtxt('temp.txt', delimiter=',',
         #converters={ 0: md.strpdate2num('%d/%m/%Y')})
 
 
-print ('download speed: ',np.mean(y1))
-print ('upload speed: ',np.mean(y2))
+np.set_printoptions(precision=2)
 fig=plt.figure() 
 ax=fig.add_subplot(1,1,1)
 
+ax.text(.1,.23,r'$\mu_{up}     = $'+str(np.around(np.mean(y1),2))+r'   $\sigma_{up} =     $'+str(np.around(np.std(y1),2)),transform=ax.transAxes,fontsize=12)
+ax.text(.1,.3,r'$\mu_{down} = $'+str(np.around(np.mean(y2),2))+r'   $\sigma_{down} = $'+str(np.around(np.std(y2),2)),transform=ax.transAxes,fontsize=12)
 
-plt.plot_date(x1,y1,'g^',label='\n green UP')
+plt.plot_date(x1,y1,'g^',label='\n green UP ')
 plt.plot_date(x1,y2,'bs',label=' blue DOWN')
 #plt.text(1.,1.,r' $\sigma = .1$')
 plt.grid(True)
