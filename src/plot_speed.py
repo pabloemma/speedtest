@@ -49,8 +49,8 @@ if(drop):
     myaccount = dbx.users_get_current_account()
     print('***************************dropbox************************************')
     print('*                                                                    *')
-    print myaccount.name.surname , myaccount.name.given_name
-    print myaccount.email
+    print 'first = ',myaccount.name.given_name,'last = ',myaccount.name.surname  
+    print 'email account = ',myaccount.email
     print('*                                                                    *')
     print('***************************dropbox************************************')
 
