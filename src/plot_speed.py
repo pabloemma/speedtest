@@ -87,8 +87,9 @@ x1,y1,y2 = np.loadtxt('temp.txt', delimiter=',',
         #converters={ 0: md.strpdate2num('%d/%m/%Y')})
 
 
-
-fig=plt.figure()
+print ('download speed: ',np.mean(y1))
+print ('upload speed: ',np.mean(y2))
+fig=plt.figure() 
 ax=fig.add_subplot(1,1,1)
 
 
@@ -102,7 +103,7 @@ ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M'))
 plt.xlabel('Time')
 plt.ylabel('Speed in Mbs')
 plt.title('Speedtest LCWA using '+file)
-plt.legend(loc="lower right",shadow=True, fancybox=True)
+plt.legend(facecolor='ivory',loc="lower right",shadow=True, fancybox=True)
 plt.ylim(0.,24.) # set yaxis limit
 plt.xticks(rotation='vertical')
 plt.tight_layout()
