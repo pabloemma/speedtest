@@ -35,6 +35,8 @@ For raspi startup we need to
 sudo cp test_speed1.py /etc/init.d
 sudo update-rc.d test_speed1.py defaults
 
+for espeak on raspi, might have to do pulseaudio -D
+
 '''
 
 import sys
