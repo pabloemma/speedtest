@@ -227,6 +227,8 @@ class test_speed1():
             #self.keyfile('LCWA_p.txt')
             return
         else:
+            for k in range(len(sys.argv)):
+                print ' cli commands',sys.argv
             #make cyber mesa the default
             if(args.servers):
                 if platform.system() == 'Darwin':
@@ -275,7 +277,7 @@ class test_speed1():
                 self.ConnectDropBox() # establish the contact to dropbox
                 
         self.command = temp1 
-        #print self.command      
+        print self.command      
         return 
     
     def RunLoop(self):
