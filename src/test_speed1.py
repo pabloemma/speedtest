@@ -10,6 +10,7 @@
 ### END INIT INFO
 
 
+
 '''
 Created on Feb 8, 2020
 
@@ -66,7 +67,7 @@ class test_speed1():
         
         self.DropFlag = False # default no dropbox connection
         
-
+        self.Debug = False
         # check if we have espeak
         
 
@@ -93,13 +94,6 @@ class test_speed1():
 
         f=open(self.cryptofile,"r")
         self.data =f.readline() #key for encryption
-        #self.data=self.data.strip('\n')
-        #print self.data,self.data
-        #f.close()
-        #enc = base64.b64decode(self.data)
-        #iv = enc[:16]
-        #cipher = AES.new(self.key, AES.MODE_CBC, iv )
-        #print type(unpad(cipher.decrypt( enc[16:] ),16))
         
 
          
@@ -147,7 +141,7 @@ class test_speed1():
         """
         keep track of the updates
         """
-        self.vs = '3.02.3'
+        self.vs = '3.03.0'
 
         
         print(' History')
@@ -162,7 +156,7 @@ class test_speed1():
         print('version 3.02.2',' write dropbox file around the half hour mark')
         print('Version 3.02.3', ' Included a header which is needed for the raspberry pi to start test_speed1 at boot')
         print('                     - gives an acoustic signal at startup')
-
+        print('Version 3.03.0', ' added a Debug switch')
         print('\n\n\n')
         
         
@@ -194,6 +188,7 @@ class test_speed1():
         parser.add_argument("-t","--time",help = "time between succssive speedtests in minutes (integer)" )
         #parser.add_argument("-p","--pwfile",help = "The passwordfile" )
         parser.add_argument("-d","--dpfile",help = "The file for the dropbox" )
+        parser.add_argument("-a","--adebug",action='store_true',help = "a debug version" )
 
         #parser.add_argument("-ip","--ip=ARG",help = "Attempt to bind to the specified IP address when connecting to servers" )
         
@@ -227,8 +222,11 @@ class test_speed1():
             #self.keyfile('LCWA_p.txt')
             return
         else:
-            for k in range(len(sys.argv)):
-                print ' cli commands',sys.argv
+            if(args.adebug):
+                self.ARGS = sys.argv
+                self.DebugProgram(1)
+                self.Debug = True
+                self.Prompt = 'Test_speed1_Debug>'
             #make cyber mesa the default
             if(args.servers):
                 if platform.system() == 'Darwin':
@@ -277,7 +275,8 @@ class test_speed1():
                 self.ConnectDropBox() # establish the contact to dropbox
                 
         self.command = temp1 
-        print self.command      
+        if(self.Debug):
+            self.DebugProgram(2)     
         return 
     
     def RunLoop(self):
@@ -372,7 +371,9 @@ class test_speed1():
         #a is now a tuple , which we fill into a csv list
         self.CreateOutput(a)
         
-        #print self.output  #for debugging
+        if(self.Debug):
+            self.DebugProgram(5)
+        
 
         myline=''
         # now create outputline from tuple
@@ -388,7 +389,10 @@ class test_speed1():
             self.OpenFile()
 
         
-        #print myline
+        if(self.Debug):
+            self.myline = myline
+            self.DebugProgram(3)
+        print myline
         self.output_file.write(myline)
         
         
@@ -416,7 +420,9 @@ class test_speed1():
             return
         
         
-        print inc # for debugging
+        if(self.Debug):
+            self.inc = inc
+            self.DebugProgram(4)
         self.output.append(inc[0])
         self.output.append(int(inc[2]))
         for k in  [3,4,5]:
@@ -469,8 +475,23 @@ class test_speed1():
         Header = 'day,time,server name, server id,latency,jitter,package , download, upload \n'
         self.output_file.write(Header)
         
-        
-        
+    def DebugProgram(self,err): 
+        """
+        Debug statements
+        """
+        temp = 'test_speed1_debug> '
+        if(err == 1) :
+            for k in range(len(self.ARGS)):
+                print temp,' cli commands',self.ARGS[k]
+        elif(err ==2):
+            print temp, 'command for program ', self.command 
+        elif(err ==3): 
+            print temp, 'Output :'
+            print self.myline
+        elif(err == 4):
+            print temp,'Data block',self.inc
+        elif(err == 5):
+            print temp,' output',self.output  #for debugging
 if __name__ == '__main__':
     
     server1 = 'speed-king.cybermesa.com:8080'
