@@ -50,6 +50,7 @@ import argparse as argp  # we want to use CLI
 import platform # need to determine the OS
 import subprocess as sp
 import dropbox
+import socket # needed for hostname id
 from __builtin__ import True
 
 
@@ -141,7 +142,7 @@ class test_speed1():
         """
         keep track of the updates
         """
-        self.vs = '3.03.0'
+        self.vs = '3.04.0'
 
         
         print(' History')
@@ -157,6 +158,7 @@ class test_speed1():
         print('Version 3.02.3', ' Included a header which is needed for the raspberry pi to start test_speed1 at boot')
         print('                     - gives an acoustic signal at startup')
         print('Version 3.03.0', ' added a Debug switch')
+        print('Version 3.04.0', 'get host name and add it to the filename')
         print('\n\n\n')
         
         
@@ -453,7 +455,8 @@ class test_speed1():
         '''
         self.current_day = date.today()
         a = datetime.datetime.today().strftime('%Y-%m-%d')
-        filename = a+'speedfile.csv'
+        self.GetIPinfo()
+        filename =self.hostname + a+'speedfile.csv'  #add hostname
         # if filename exists we open in append mode
         #otherwise we will create it
         homedir = os.environ['HOME']
@@ -492,6 +495,34 @@ class test_speed1():
             print temp,'Data block',self.inc
         elif(err == 5):
             print temp,' output',self.output  #for debugging
+        elif(err==6):
+            print temp ,' my hostname ',self.hostname
+            print temp , 'my IP is '  , self.my_ip 
+            
+    def GetIPinfo(self):
+        """
+        gets the host info
+        """
+        a = socket.gethostname()
+        self.my_ip = socket.gethostbyname(a)
+        
+        # now chek the hostname if it is >4 characters strip rest
+        # if it is shorter pad
+        if len(a) > 4:
+            self.hostname = a[:4]+'_'
+            
+        elif len(a) < 4:
+            temp='xxxx'
+            
+            self.hostname = a+temp[0:4-len(b)]+'_' #pad with xxxx
+        else:
+            self.hostname = a+'_'
+        
+        if(self.Debug):
+            self.DebugProgram(6)
+        
+        return
+        
 if __name__ == '__main__':
     
     server1 = 'speed-king.cybermesa.com:8080'
