@@ -10,11 +10,18 @@ import dropbox
 
 class MyDrop():
     
-    def __init__(self):
-          
-          # connect to my newmexicopand drop box
-        self.dbx=dropbox.Dropbox("1N74OZNee0AAAAAAAAAAC8Pvo3BX2phcS-95b62r_F7W_xfjV_Xx606gC_Nxfeq5")
+    def __init__(self,cryptofile):
+        
+        
+        f=open(cryptofile,"r")
+        self.data =f.readline() #key for encryption
+
+        # connect to my newmexicopand drop box
+        self.dbx=dropbox.Dropbox(self.data.strip('\n'))
         self.myaccount = self.dbx.users_get_current_account()
+        print self.myaccount.name.surname , self.myaccount.name.given_name
+        print self.myaccount.email
+        #print self.myaccount
     
     
     def PushFile(self):
@@ -23,6 +30,6 @@ class MyDrop():
                               mode=dropbox.files.WriteMode('overwrite', None)) 
 
 if __name__ == '__main__':
-    MyD = MyDrop()
-    MyD.PushFile()
+    MyD = MyDrop('/Users/klein/workspace/network speed/src/LCWA_d.txt')
+    #MyD.PushFile()
     pass

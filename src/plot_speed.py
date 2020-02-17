@@ -118,7 +118,10 @@ plt.legend(facecolor='ivory',loc="lower right",shadow=True, fancybox=True)
 plt.ylim(0.,24.) # set yaxis limit
 plt.xticks(rotation='vertical')
 plt.tight_layout()
-fig.savefig("foo.pdf", bbox_inches='tight')
+file2 = file1.replace('csv','pdf')
+
+print file2
+fig.savefig(file2, bbox_inches='tight')
 plt.show()
 
 
