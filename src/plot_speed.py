@@ -20,12 +20,13 @@ import dropbox
 drop = False
 #for k in range(len(sys.argv)):
 #    print sys.argv
+
 if len(sys.argv)==2:
     # check if file exists
     try:
-        if os.path.isfile((sys.argv[1])):
-            filename = sys.argv[1]
-            file1=filename
+        os.path.isfile((sys.argv[1]))
+        filename = sys.argv[1]
+        file1=filename
     except:
         print('no file')
         sys.exit(0)
@@ -79,7 +80,7 @@ for line in open(file1, 'r'):
     else:
         temp_file.write(line)
     counter = counter + 1
-f.close()
+#file1.close()
 temp_file.close()
    
 
@@ -108,7 +109,11 @@ ax.xaxis.set_major_locator(md.MinuteLocator(interval=60))
 ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M'))
 plt.xlabel('Time')
 plt.ylabel('Speed in Mbs')
-plt.title('Speedtest LCWA using '+file)
+if(drop):
+    plt.title('Speedtest LCWA using '+file)
+else:
+    plt.title('Speedtest LCWA using '+file1)
+    
 plt.legend(facecolor='ivory',loc="lower right",shadow=True, fancybox=True)
 plt.ylim(0.,24.) # set yaxis limit
 plt.xticks(rotation='vertical')
